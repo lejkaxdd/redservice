@@ -2,6 +2,11 @@ from flask import Flask, render_template, has_request_context, request, make_res
 import lxml.etree
 from flask.logging import default_handler
 from model import *
+from logger import *
+from urllib.parse import urlparse
+import time
+
+#install time, urllib
 
 
 persons = [
@@ -20,44 +25,129 @@ def start():
     
     # Return main page
     if request.method == 'GET':
-                
+        params = []
+        named_tuple = time.localtime() # получить struct_time
+        time_string = time.strftime("%Y_%m_%d" , named_tuple)
+
+        params.append("1000")
+        params.append(request.environ["REMOTE_ADDR"])
+        params.append(request.environ["REMOTE_PORT"])
+        params.append(f"{time_string}")
+        params.append(urlparse(request.base_url).hostname)          
+        params.append(request.environ["SERVER_PROTOCOL"])
+        params.append(request.method)
+        params.append(request.environ["PATH_INFO"])
+        params.append(request. environ["QUERY_STRING"]) 
+        params.append(request.environ["HTTP_USER_AGENT"])
+        params.append("200")
+        params.append("none")
+        
+        
         #Creating SQLite db and table
         try:
             create_table()
             for element in persons:
                 insert_person(element[0], element[1], element[2], element[3])
-        except:
+            flag = 1 
+            start_page(flag, params)   
+            
+            return render_template("index.html") 
+        
+        except IOError as e:
+            params = []
+            named_tuple = time.localtime() # получить struct_time
+            time_string = time.strftime("%Y_%m_%d" , named_tuple)
+            params.append("1002")
+            params.append(request.environ["REMOTE_ADDR"])
+            params.append(request.environ["REMOTE_PORT"])
+            params.append(f"{time_string}")
+            params.append(urlparse(request.base_url).hostname)          
+            params.append(request.environ["SERVER_PROTOCOL"])
+            params.append(request.method)
+            params.append(request.environ["PATH_INFO"])   
+            params.append(request. environ["QUERY_STRING"]) 
+            params.append(request.environ["HTTP_USER_AGENT"])
+            params.append("200")
+            params.append(str(e))
+            
+            flag = 0 
+            start_page(flag, params) 
+            
             return "Opps Error. DB not initialized"
         
-        return render_template("index.html")
-    
     #Handle user input
     if request.method == 'POST':
             
         try:
             xml_src = request.get_data()
-            print(xml_src)
             
             if ".dtd" in str(xml_src): # Blind XXE via error, need attacker own server
+                
+                params = []
+                named_tuple = time.localtime() # получить struct_time
+                time_string = time.strftime("%Y_%m_%d" , named_tuple)
+                   
                 parser = lxml.etree.XMLParser(resolve_entities=True, no_network=False, huge_tree=True)
                 doc = lxml.etree.fromstring(xml_src, parser=parser) 
-                result = parser.error_log
                 data = {
                     "data" : parser.error_log
                 }
+                
+                params.append("1004")
+                params.append(request.environ["REMOTE_ADDR"])
+                params.append(request.environ["REMOTE_PORT"])
+                params.append(f"{time_string}")
+                params.append(urlparse(request.base_url).hostname)          
+                params.append(request.environ["SERVER_PROTOCOL"])         
+                params.append(request.method)
+                params.append(request.environ["PATH_INFO"])  
+                params.append(xml_src.decode().replace('"',r'\"').replace("\r\n", "")) 
+                params.append(request.environ["HTTP_USER_AGENT"])
+                params.append("200")
+                params.append("none")
+
+                flag = 1 
+                receive_payload(flag, params) 
 
                 return jsonify(data)
             
             elif "file:///" in str(xml_src): # Add vulnerable func if user input file://  XXE
+                
+                params = []
+                named_tuple = time.localtime() # получить struct_time
+                time_string = time.strftime("%Y_%m_%d" , named_tuple)
+                
                 parser = lxml.etree.XMLParser(resolve_entities=True, no_network=False, huge_tree=True)
                 doc = lxml.etree.fromstring(xml_src, parser=parser)
                 data = {
                     "data" : str(lxml.etree.tostring(doc))
                 }
+                
+                params.append("1003")
+                params.append(request.environ["REMOTE_ADDR"])
+                params.append(request.environ["REMOTE_PORT"])
+                params.append(f"{time_string}")
+                params.append(urlparse(request.base_url).hostname)          
+                params.append(request.environ["SERVER_PROTOCOL"])          
+                params.append(request.method)
+                params.append(request.environ["PATH_INFO"])  
+                params.append(xml_src.decode().replace('"',r'\"').replace("\r\n", ""))
+                params.append(request.environ["HTTP_USER_AGENT"])
+                params.append("200")
+                params.append("none")
+            
+                flag = 1 
+                receive_payload(flag, params) 
+                
                 return jsonify(data) 
             
             # Return standard data if no error returned
             else:
+                
+                params = []
+                named_tuple = time.localtime() # получить struct_time
+                time_string = time.strftime("%Y_%m_%d" , named_tuple)
+                
                 parser = lxml.etree.XMLParser(resolve_entities=True, no_network=False, huge_tree=True)
                 doc = lxml.etree.fromstring(xml_src, parser=parser)
                 frequency = doc[0].text
@@ -69,8 +159,44 @@ def start():
                         "SecretCode" : check(frequency.strip())[0][3],
                     }
                 }
+                
+                params.append("1002")
+                params.append(request.environ["REMOTE_ADDR"])
+                params.append(request.environ["REMOTE_PORT"])
+                params.append(f"{time_string}")
+                params.append(urlparse(request.base_url).hostname)          
+                params.append(request.environ["SERVER_PROTOCOL"])          
+                params.append(request.method)
+                params.append(request.environ["PATH_INFO"])  
+                params.append(xml_src.decode().replace('"',r'\"').replace("\r\n", ""))
+                params.append(request.environ["HTTP_USER_AGENT"])
+                params.append("200")
+                params.append("none")
+            
+                flag = 1 
+                receive_payload(flag, params) 
+                
                 return jsonify(data)
-        except:
+            
+        except IOError as e:
+            params = []
+            named_tuple = time.localtime() # получить struct_time
+            time_string = time.strftime("%Y_%m_%d" , named_tuple)
+            params.append("1005")
+            params.append(request.environ["REMOTE_ADDR"])
+            params.append(request.environ["REMOTE_PORT"])
+            params.append(f"{time_string}")
+            params.append(urlparse(request.base_url).hostname)          
+            params.append(request.environ["SERVER_PROTOCOL"])          
+            params.append(request.method)
+            params.append(request.environ["PATH_INFO"])   
+            params.append(xml_src.decode().replace('"',r'\"').replace("\r\n", "")) 
+            params.append(request.environ["HTTP_USER_AGENT"])
+            params.append("200")
+            params.append(str(e))
+            
+            flag = 0 
+            receive_payload(flag, params) 
             return "Something get wrong. Try again!"
 
 

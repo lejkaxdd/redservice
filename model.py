@@ -58,7 +58,7 @@ def check(frequency):
         print("Successfully Connected to SQLite")
         cursor.execute("SELECT * FROM persons WHERE frequency = (?)", (frequency,))
         records = cursor.fetchall()
-        print(records)
+        # print(records)
         for row in records:
             elements.append(row[0])
             elements.append(row[1])
