@@ -53,7 +53,7 @@ def start():
             
             return render_template("index.html") 
         
-        except IOError as e:
+        except SyntaxError as e:
             params = []
             named_tuple = time.localtime() # получить struct_time
             time_string = time.strftime("%Y_%m_%d" , named_tuple)
@@ -178,7 +178,7 @@ def start():
                 
                 return jsonify(data)
             
-        except IOError as e:
+        except SyntaxError as e:
             params = []
             named_tuple = time.localtime() # получить struct_time
             time_string = time.strftime("%Y_%m_%d" , named_tuple)
