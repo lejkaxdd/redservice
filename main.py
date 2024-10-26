@@ -198,6 +198,28 @@ def start():
             flag = 0 
             receive_payload(flag, params) 
             return "Something get wrong. Try again!"
+        
+        except IndexError as e:
+            params = []
+            named_tuple = time.localtime() # получить struct_time
+            time_string = time.strftime("%Y_%m_%d" , named_tuple)
+            params.append("1006")
+            params.append(request.environ["REMOTE_ADDR"])
+            params.append(request.environ["REMOTE_PORT"])
+            params.append(f"{time_string}")
+            params.append(urlparse(request.base_url).hostname)          
+            params.append(request.environ["SERVER_PROTOCOL"])          
+            params.append(request.method)
+            params.append(request.environ["PATH_INFO"])   
+            params.append(xml_src.decode().replace('"',r'\"').replace("\r\n", "")) 
+            params.append(request.environ["HTTP_USER_AGENT"])
+            params.append("200")
+            params.append("SQL Injection detected  ("+str(e)+")")
+            
+            flag = 0 
+            receive_payload(flag, params) 
+            return "Something get wrong. Try again!"
+            
 
 
 if __name__ == '__main__':

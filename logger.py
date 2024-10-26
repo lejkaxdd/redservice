@@ -14,6 +14,7 @@ log.basicConfig(filename='./log/app.log', level=log.INFO, format='%(asctime)s - 
 # 1003 - XXE file:///
 # 1004 - XXE .dtd
 # 1005 - Post Request error
+# 1006 - Attempt to exploit SQL Injection
 
 global loga
 loga = """{{
