@@ -37,7 +37,6 @@ button{
   border-color: white;
   color: rgba(125,225,125,0.75);
   background-color: #0F140F;
-
 }
 
 
@@ -143,8 +142,9 @@ h1{
   /* cursor: pointer; */
 }
 
-@keyframes ScreenEffect {
+/*@keyframes ScreenEffect {
   0% { opacity: 0 }
   50% { opacity: 1 }
   100% { opacity: 0 }
 }
+*/
