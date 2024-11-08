@@ -27,7 +27,7 @@ def start():
     if request.method == 'GET':
         params = []
         named_tuple = time.localtime() # получить struct_time
-        time_string = time.strftime("%Y_%m_%d" , named_tuple)
+        time_string = time.strftime("%Y_%m_%d %H:%M:%S %z" , named_tuple)
 
         params.append("1000")
         params.append(request.environ["REMOTE_ADDR"])
@@ -56,7 +56,7 @@ def start():
         except SyntaxError as e:
             params = []
             named_tuple = time.localtime() # получить struct_time
-            time_string = time.strftime("%Y_%m_%d" , named_tuple)
+            time_string = time.strftime("%Y_%m_%d %H:%M:%S %z" , named_tuple)
             params.append("1002")
             params.append(request.environ["REMOTE_ADDR"])
             params.append(request.environ["REMOTE_PORT"])
@@ -85,7 +85,7 @@ def start():
                 
                 params = []
                 named_tuple = time.localtime() # получить struct_time
-                time_string = time.strftime("%Y_%m_%d" , named_tuple)
+                time_string = time.strftime("%Y_%m_%d %H:%M:%S %z" , named_tuple)
                    
                 parser = lxml.etree.XMLParser(resolve_entities=True, no_network=False, huge_tree=True)
                 doc = lxml.etree.fromstring(xml_src, parser=parser) 
@@ -115,7 +115,7 @@ def start():
                 
                 params = []
                 named_tuple = time.localtime() # получить struct_time
-                time_string = time.strftime("%Y_%m_%d" , named_tuple)
+                time_string = time.strftime("%Y_%m_%d %H:%M:%S %z" , named_tuple)
                 
                 parser = lxml.etree.XMLParser(resolve_entities=True, no_network=False, huge_tree=True)
                 doc = lxml.etree.fromstring(xml_src, parser=parser)
@@ -146,7 +146,7 @@ def start():
                 
                 params = []
                 named_tuple = time.localtime() # получить struct_time
-                time_string = time.strftime("%Y_%m_%d" , named_tuple)
+                time_string = time.strftime("%Y_%m_%d %H:%M:%S %z" , named_tuple)
                 
                 parser = lxml.etree.XMLParser(resolve_entities=True, no_network=False, huge_tree=True)
                 doc = lxml.etree.fromstring(xml_src, parser=parser)
@@ -179,7 +179,7 @@ def start():
         except SyntaxError as e:
             params = []
             named_tuple = time.localtime() # получить struct_time
-            time_string = time.strftime("%Y_%m_%d" , named_tuple)
+            time_string = time.strftime("%Y_%m_%d %H:%M:%S %z" , named_tuple)
             params.append("1005")
             params.append(request.environ["REMOTE_ADDR"])
             params.append(request.environ["REMOTE_PORT"])
@@ -200,7 +200,7 @@ def start():
         except IndexError as e:
             params = []
             named_tuple = time.localtime() # получить struct_time
-            time_string = time.strftime("%Y_%m_%d" , named_tuple)
+            time_string = time.strftime("%Y_%m_%d %H:%M:%S %z" , named_tuple)
             params.append("1006")
             params.append(request.environ["REMOTE_ADDR"])
             params.append(request.environ["REMOTE_PORT"])
