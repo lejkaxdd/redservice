@@ -20,6 +20,8 @@ document.getElementById("checkCapsuleForm").addEventListener("submit", function(
     return xml;
   }
   
+var obj; 
+
   function checkCapsule(method, path, data) {
     const retry = (tries) => tries == 0
         ? null
@@ -31,10 +33,30 @@ document.getElementById("checkCapsuleForm").addEventListener("submit", function(
                 body: payload(data)
             }
           )
-            .then(res => res.status === 200
-                ? res.text().then(t => isNaN(t) ? t : t + " units")
-                : "Could not fetch capsule!"
-            )
-  
+          .then(response => response.text())
+          .then(data => {
+            obj = data;
+          })
+          
+
+          if (typeof obj !== undefined){
+            const jsonItem = obj
+            if (jsonItem){
+              const data = JSON.parse(jsonItem)
+              var tableRef = document.getElementById('myTable').getElementsByTagName('tbody')[0];
+              
+              // insert Row
+              console.log(tableRef)
+              tableRef.insertRow().innerHTML = 
+              "<td>" + data.Id + "</td>" + 
+              "<td>" +data.Name+ "</td>"+
+              "<td>" +data.Frequency+ "</td>"+
+              "<td>" +data.SecretCode+ "</td>";
+          
+
+            }
+          };
+          
+      
     retry(3);
   }

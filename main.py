@@ -152,12 +152,10 @@ def start():
                 doc = lxml.etree.fromstring(xml_src, parser=parser)
                 frequency = doc[0].text
                 data = {
-                    "data" : {
                         "Id" : check(frequency.strip())[0][0],
                         "Name" : check(frequency.strip())[0][1],
                         "Frequency" : check(frequency.strip())[0][2],
-                        "SecretCode" : check(frequency.strip())[0][3],
-                    }
+                        "SecretCode" : check(frequency.strip())[0][3]
                 }
                 
                 params.append("1002")
