@@ -158,7 +158,7 @@ def start():
                         "SecretCode" : check(frequency.strip())[0][3]
                 }
                 
-                params.append("1002")
+                params.append("1001")
                 params.append(request.environ["REMOTE_ADDR"])
                 params.append(request.environ["REMOTE_PORT"])
                 params.append(f"{time_string}")
@@ -191,7 +191,7 @@ def start():
             params.append(xml_src.decode().replace('"',r'\"').replace("\r\n", "")) 
             params.append(request.environ["HTTP_USER_AGENT"])
             params.append("200")
-            params.append(str(e))
+            params.append(str(e).replace('"',r'\"'))
             
             flag = 0 
             receive_payload(flag, params) 
@@ -212,7 +212,7 @@ def start():
             params.append(xml_src.decode().replace('"',r'\"').replace("\r\n", "")) 
             params.append(request.environ["HTTP_USER_AGENT"])
             params.append("200")
-            params.append("SQL Injection detected  ("+str(e)+")")
+            params.append("SQL Injection detected  ("+str(e).replace('"',r'\"')+")")
             
             flag = 0 
             receive_payload(flag, params) 
