@@ -5,6 +5,8 @@ from model import *
 from logger import *
 from urllib.parse import urlparse
 import time
+import logging, sys
+
 
 #install time, urllib
 
@@ -19,6 +21,12 @@ persons = [
 ]
 
 app = Flask(__name__)
+
+
+l = logging.getLogger('werkzeug')
+l.disabled = True
+cli = sys.modules['flask.cli']
+cli.show_server_banner = lambda *x: None
 
 @app.route('/', methods = ['GET', 'POST'])
 def start():
