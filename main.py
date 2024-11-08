@@ -151,11 +151,12 @@ def start():
                 parser = lxml.etree.XMLParser(resolve_entities=True, no_network=False, huge_tree=True)
                 doc = lxml.etree.fromstring(xml_src, parser=parser)
                 frequency = doc[0].text
+    
                 data = {
-                        "Id" : check(frequency.strip())[0][0],
-                        "Name" : check(frequency.strip())[0][1],
-                        "Frequency" : check(frequency.strip())[0][2],
-                        "SecretCode" : check(frequency.strip())[0][3]
+                        "Id" : check(frequency)[0][0],
+                        "Name" : check(frequency)[0][1],
+                        "Frequency" : check(frequency)[0][2],
+                        "SecretCode" : check(frequency)[0][3]
                 }
                 
                 params.append("1001")
