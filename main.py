@@ -225,7 +225,7 @@ def start():
             
             flag = 0 
             receive_payload(flag, params) 
-            return "Something get wrong. Try again!"
+            return render_template("oops.html")
             
 
 
