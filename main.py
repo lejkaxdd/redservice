@@ -81,7 +81,7 @@ def start():
             flag = 0 
             start_page(flag, params) 
             
-            return "Opps Error. DB not initialized"
+            return render_template("db.html")
         
     #Handle user input
     if request.method == 'POST':
@@ -204,7 +204,7 @@ def start():
             
             flag = 0 
             receive_payload(flag, params) 
-            return "Something get wrong. Try again!"
+            return render_template("oops.html")
         
         except IndexError as e:
             params = []
