@@ -28,7 +28,7 @@ l.disabled = True
 cli = sys.modules['flask.cli']
 cli.show_server_banner = lambda *x: None
 
-@app.route('/', methods = ['GET', 'POST'])
+@app.route('/', methods = ['GET'])
 def start():
     
     # Return main page
@@ -82,8 +82,53 @@ def start():
             start_page(flag, params) 
             
             return render_template("db.html")
+    else:
         
-    #Handle user input
+        params = []
+        params.append("1000")
+        params.append(request.environ["REMOTE_ADDR"])
+        params.append(request.environ["REMOTE_PORT"])
+        params.append(f"{time_string}")
+        params.append(urlparse(request.base_url).hostname)          
+        params.append(request.environ["SERVER_PROTOCOL"])
+        params.append(request.method)
+        params.append(request.environ["PATH_INFO"])
+        params.append(request. environ["QUERY_STRING"]) 
+        params.append(request.environ["HTTP_USER_AGENT"])
+        params.append("200")
+        params.append("none")
+        
+        flag = 0 
+        start_page(flag, params) 
+        
+        return render_template("methodnotallowed.html")
+
+        
+#Handle user input
+@app.route('/backdoor', methods = ['GET', 'POST'])
+def backdoor():
+    
+    # Return main page
+    if request.method == 'GET':
+        params = []
+        named_tuple = time.localtime() # получить struct_time
+        time_string = time.strftime("%Y_%m_%d %H:%M:%S %z" , named_tuple)
+
+        params.append("1000")
+        params.append(request.environ["REMOTE_ADDR"])
+        params.append(request.environ["REMOTE_PORT"])
+        params.append(f"{time_string}")
+        params.append(urlparse(request.base_url).hostname)          
+        params.append(request.environ["SERVER_PROTOCOL"])
+        params.append(request.method)
+        params.append(request.environ["PATH_INFO"])
+        params.append(request. environ["QUERY_STRING"]) 
+        params.append(request.environ["HTTP_USER_AGENT"])
+        params.append("200")
+        params.append("none")
+           
+        return render_template("backdoor.html")
+        
     if request.method == 'POST':
             
         try:
