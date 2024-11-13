@@ -15,6 +15,8 @@ log.basicConfig(filename='./log/app.log', level=log.INFO, format='%(asctime)s - 
 # 1004 - XXE .dtd
 # 1005 - Post Request error
 # 1006 - Attempt to exploit SQL Injection
+# 1007 - Trying to use different HTTP Methods on start page
+# 1008 - Fuzzing directory on / endpoint
 
 global loga
 loga = '''{{"event_code" : "{event}", "agent" : {{"ip" : "10.61.10.11", "name": "RedService", "id" : "002"}}, "data": {{"app_proto": "http", "src_ip": "{ip}", "src_port": "{port}", "dest_port": "5000", "event_timestamp" : "{time}"}}, "http": {{"hostname": "{hostname}", "protocol": "{protocol}", "http_method": "{http_method}", "payload" : ["{payload}"], "url": "{url}", "http_user_agent": "{http_user_agent}", "status": "{status}"}}, "err_message" : "{error}"}}'''

@@ -28,6 +28,7 @@ l.disabled = True
 cli = sys.modules['flask.cli']
 cli.show_server_banner = lambda *x: None
 
+
 @app.route('/', methods = ['GET'])
 def start():
     
@@ -82,10 +83,10 @@ def start():
             start_page(flag, params) 
             
             return render_template("db.html")
-    else:
+    elif request.method != 'GET':
         
         params = []
-        params.append("1000")
+        params.append("1007")
         params.append(request.environ["REMOTE_ADDR"])
         params.append(request.environ["REMOTE_PORT"])
         params.append(f"{time_string}")
@@ -102,8 +103,7 @@ def start():
         start_page(flag, params) 
         
         return render_template("methodnotallowed.html")
-
-        
+            
 #Handle user input
 @app.route('/backdoor', methods = ['GET', 'POST'])
 def backdoor():
@@ -272,6 +272,31 @@ def backdoor():
             receive_payload(flag, params) 
             return render_template("oops.html")
             
+@app.errorhandler(404)
+def page_not_found(e):
+    
+    params = []
+    named_tuple = time.localtime() # получить struct_time
+    time_string = time.strftime("%Y_%m_%d %H:%M:%S %z" , named_tuple)
+
+    params.append("1008")
+    params.append(request.environ["REMOTE_ADDR"])
+    params.append(request.environ["REMOTE_PORT"])
+    params.append(f"{time_string}")
+    params.append(urlparse(request.base_url).hostname)          
+    params.append(request.environ["SERVER_PROTOCOL"])
+    params.append(request.method)
+    params.append(request.environ["PATH_INFO"])
+    params.append(request. environ["QUERY_STRING"]) 
+    params.append(request.environ["HTTP_USER_AGENT"])
+    params.append("404")
+    params.append("none")
+    
+    flag = 0 
+    start_page(flag, params)
+    
+    return render_template('notfound.html')
+
 
 
 if __name__ == '__main__':
